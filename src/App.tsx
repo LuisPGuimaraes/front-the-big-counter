@@ -1,11 +1,11 @@
-import { useState } from 'react'
 import './App.css'
 import CountDisplay from './components/CountDisplay'
 import IncrementButton from './components/IncrementButton'
 import ResetButton from './components/ResetButton'
+import useCounter from './hooks/useCounter'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { count, error, increment, reset } = useCounter()
 
   return (
     <div className="app">
@@ -14,8 +14,8 @@ function App() {
         <CountDisplay count={count} />
       </div>
       <div className="controls">
-        <ResetButton onReset={() => setCount(0)} />
-        <IncrementButton onIncrement={() => setCount((value) => value + 1)} />
+        <ResetButton onReset={reset} />
+        <IncrementButton onIncrement={increment} />
       </div>
     </div>
   )
