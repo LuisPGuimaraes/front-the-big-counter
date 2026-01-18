@@ -62,14 +62,30 @@ export default function useCounter(options: UseCounterOptions = {}) {
   }, [])
 
   useEffect(() => {
-    if (options.loadOnMount ?? true) {
-      void getCount()
+    if (options.loadOnMount) {
+      const loadInitialData = async () => {
+        try {
+          const list = await fetchCounters()
+          setCounters(list)
+          const firstId = list[0]?.id
+          if (firstId != null) {
+            setSelectedCounterId(firstId)
+            const realCount = await fetchCount(firstId)
+            setCount(realCount)
+          }
+        } catch (err) {
+          console.error('[count] initial load failed', err)
+        }
+      }
+
+      void loadInitialData()
     }
-  }, [getCount, options.loadOnMount])
+  }, [options.loadOnMount])
 
   return {
     count,
     counters,
+    selectedCounterId,
     getCount,
     increment: handleIncrement,
     reset: handleReset,

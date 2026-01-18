@@ -1,21 +1,16 @@
-import { useEffect } from 'react'
 import type { Counter } from '../types/counter'
 
 type CountersListProps = {
   counters: Counter[]
-  onLoadCounters: () => void
+  selectedCounterId: number | null
   onSelectCounter: (counterId: number | null | undefined) => void
 }
 
 function CountersList({
   counters,
-  onLoadCounters,
+  selectedCounterId,
   onSelectCounter,
 }: CountersListProps) {
-  useEffect(() => {
-    void onLoadCounters()
-  }, [onLoadCounters])
-
   return (
     <section className="counters-panel" aria-labelledby="counters-title">
       <h2 className="counters-title" id="counters-title">
@@ -32,6 +27,9 @@ function CountersList({
               type="button"
             >
               <span>{counter.name}</span>
+              {counter.id === selectedCounterId ? (
+                <span className="counters-selected-dot" aria-hidden="true" />
+              ) : null}
             </button>
           )
         })}

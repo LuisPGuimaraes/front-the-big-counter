@@ -50,8 +50,16 @@ export async function fetchCounters() {
     throw new Error('Failed to request /counts')
   }
 
-  const counters = (await response.json()) as Counter[]
-  return counters
+  const data = await response.json()
+  if (Array.isArray(data)) {
+    return data as Counter[]
+  }
+
+  if (data && typeof data === 'object' && Array.isArray((data as { counters?: unknown }).counters)) {
+    return (data as { counters: Counter[] }).counters
+  }
+
+  return []
 }
 
 export function createCounter(name: string) {
