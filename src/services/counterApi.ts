@@ -18,17 +18,14 @@ async function parseCountResponse(response: Response) {
 
 async function requestCount(path: string, options?: RequestInit) {
   const url = buildApiUrl(path)
-  console.log(`[count-api] request -> ${url}`)
 
   const response = await fetch(url, options)
-  console.log(`[count-api] response <- ${response.status}`)
 
   if (!response.ok) {
     throw new Error(`Failed to request ${path}`)
   }
 
   const count = await parseCountResponse(response)
-  console.log(`[count-api] count: ${count} | status: ${response.status}`)
   return count
 }
 
@@ -46,18 +43,14 @@ export function resetCount() {
 
 export async function fetchCounters() {
   const url = buildApiUrl('/counter')
-  console.log(`[count-api] request -> ${url}`)
 
   const response = await fetch(url)
-  console.log(response)
-  console.log(`[count-api] response <- ${response.status}`)
 
   if (!response.ok) {
     throw new Error('Failed to request /counts')
   }
 
   const counters = (await response.json()) as Counter[]
-  console.log(`[count-api] counters: ${counters.length} | status: ${response.status}`)
   return counters
 }
 
