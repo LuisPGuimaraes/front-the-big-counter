@@ -1,48 +1,94 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   fetchCount,
+  fetchCounters,
   incrementCount,
   resetCount,
 } from '../services/counterApi'
+import type { Counter } from '../types/counter'
 
-export default function useCounter() {
+type UseCounterOptions = {
+  loadOnMount?: boolean
+}
+
+export default function useCounter(options: UseCounterOptions = {}) {
   const [count, setCount] = useState(0)
+  const [counters, setCounters] = useState<Counter[]>([])
+  const [selectedCounterId, setSelectedCounterId] = useState<number | null>(null)
 
-  const loadCount = useCallback(async () => {
+  const getCount = useCallback(async (counterId?: number | null) => {
     try {
-      const realCount = await fetchCount()
+      const targetId = counterId ?? selectedCounterId
+      if (targetId == null) {
+        return
+      }
+
+      if (counterId != null) {
+        setSelectedCounterId(counterId)
+      }
+
+      const realCount = await fetchCount(targetId)
       setCount(realCount)
     } catch (err) {
       console.error('[count] fetch failed', err)
     }
-  }, [])
+  }, [selectedCounterId])
 
   const handleIncrement = useCallback(async () => {
     try {
       await incrementCount()
-      await loadCount()
+      await getCount()
     } catch (err) {
       console.error('[count] increment failed', err)
     }
-  }, [loadCount])
+  }, [getCount])
 
   const handleReset = useCallback(async () => {
     try {
       await resetCount()
-      await loadCount()
+      await getCount()
     } catch (err) {
       console.error('[count] reset failed', err)
     }
-  }, [loadCount])
+  }, [getCount])
+
+  const handleListCounter = useCallback(async () => {
+    try {
+      const list = await fetchCounters()
+      setCounters(list)
+    } catch (err) {
+      console.error('[count] list counters failed', err)
+    }
+  }, [])
 
   useEffect(() => {
-    void loadCount()
-  }, [loadCount])
+    if (options.loadOnMount) {
+      const loadInitialData = async () => {
+        try {
+          const list = await fetchCounters()
+          setCounters(list)
+          const firstId = list[0]?.id
+          if (firstId != null) {
+            setSelectedCounterId(firstId)
+            const realCount = await fetchCount(firstId)
+            setCount(realCount)
+          }
+        } catch (err) {
+          console.error('[count] initial load failed', err)
+        }
+      }
+
+      void loadInitialData()
+    }
+  }, [options.loadOnMount])
 
   return {
     count,
-    reload: loadCount,
+    counters,
+    selectedCounterId,
+    getCount,
     increment: handleIncrement,
     reset: handleReset,
+    handleListCounter,
   }
 }

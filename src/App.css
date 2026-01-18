@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10rem 1.5rem 1.5rem;
+  padding: 7rem 1.5rem 1.5rem;
 }
 
 .title {
@@ -40,4 +40,64 @@
 
 .controls button {
   min-width: 160px;
+}
+
+.counters-panel {
+  position: fixed;
+  left: clamp(1rem, 3vw, 2.5rem);
+  top: 10rem;
+  width: min(180px, 72vw);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(94, 54, 170, 0.15);
+  border-radius: 18px;
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: 0 20px 40px rgba(26, 18, 48, 0.15);
+  text-align: left;
+  backdrop-filter: blur(8px);
+}
+
+.counters-title {
+  margin: 0 0 0.8rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-purple);
+}
+
+.counters-table {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.counters-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: rgba(51, 33, 90, 0.9);
+}
+
+.counters-item {
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0.2rem;
+  text-align: left;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.counters-selected-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(94, 54, 170, 0.85);
+  flex-shrink: 0;
+}
+
+.counters-head {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(51, 33, 90, 0.6);
 }
