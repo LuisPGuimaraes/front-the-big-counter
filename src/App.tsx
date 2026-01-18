@@ -6,14 +6,20 @@ import ResetButton from './components/ResetButton'
 import useCounter from './hooks/useCounter'
 
 function App() {
-  const { count, counters, getCount, handleListCounter, increment, reset } =
-    useCounter()
+  const {
+    count,
+    counters,
+    selectedCounterId,
+    getCount,
+    increment,
+    reset,
+  } = useCounter()
 
   return (
     <div className="app">
       <CountersTable
         counters={counters}
-        onLoadCounters={handleListCounter}
+        selectedCounterId={selectedCounterId}
         onSelectCounter={getCount}
       />
       <h1 className="title">The Big Counter</h1>

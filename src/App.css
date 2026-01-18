@@ -87,6 +87,14 @@
   cursor: pointer;
 }
 
+.counters-selected-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(94, 54, 170, 0.85);
+  flex-shrink: 0;
+}
+
 .counters-head {
   font-size: 0.85rem;
   letter-spacing: 0.08em;
