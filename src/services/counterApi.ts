@@ -29,6 +29,22 @@ async function requestCount(path: string, options?: RequestInit) {
   return count
 }
 
+async function requestJson<T>(path: string, options?: RequestInit) {
+  const url = buildApiUrl(path)
+
+  const response = await fetch(url, options)
+
+  if (!response.ok) {
+    throw new Error(`Failed to request ${path}`)
+  }
+
+  if (response.status === 204) {
+    return null as T
+  }
+
+  return (await response.json()) as T
+}
+
 export function fetchCount(counterId: number) {
   const query = new URLSearchParams({ id: String(counterId) })
   return requestCount(`/count?${query.toString()}`)
@@ -75,7 +91,7 @@ export async function fetchCounters() {
 
 export function createCounter(name: string) {
   const body = JSON.stringify({ name })
-  return requestCount('/counter/create', {
+  return requestJson<Counter>('/counter/create', {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json' },
@@ -84,35 +100,5 @@ export function createCounter(name: string) {
 
 export function deleteCounter(id: number) {
   const query = new URLSearchParams({ id: String(id) })
-  return requestCount(`/counter?${query.toString()}`, { method: 'DELETE' })
-}
-
-export async function fetchCounters() {
-  const url = buildApiUrl('/counter')
-
-  const response = await fetch(url)
-
-  if (!response.ok) {
-    throw new Error('Failed to request /counts')
-  }
-
-  const data = await response.json()
-  if (Array.isArray(data)) {
-    return data as Counter[]
-  }
-
-  if (data && typeof data === 'object' && Array.isArray((data as { counters?: unknown }).counters)) {
-    return (data as { counters: Counter[] }).counters
-  }
-
-  return []
-}
-
-export function createCounter(name: string) {
-  const body = JSON.stringify({ name })
-  return requestCount('/count/create', { method: 'POST', body, headers: { 'Content-Type': 'application/json' } })
-}
-
-export function deleteCounter(id: number) {
-  return requestCount(`/count/${id}`, { method: 'DELETE' })
+  return requestJson<void>(`/counter?${query.toString()}`, { method: 'DELETE' })
 }

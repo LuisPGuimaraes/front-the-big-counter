@@ -2,7 +2,7 @@
 
 :root {
   --color-purple: #5b2aa8;
-  --color-lavender: #f4edff;
+  --color-lavender: #e3d6fb;
 
   font-family: 'Outfit', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
     'Lucida Sans', sans-serif;
@@ -10,7 +10,7 @@
   font-weight: 400;
 
   color: var(--color-purple);
-  background-color: #ffffff;
+  background-color: #e6e0f2;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,7 +22,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #ffffff 0%, var(--color-lavender) 100%);
+  background: linear-gradient(180deg, #e6e0f2 0%, var(--color-lavender) 100%);
   overflow: hidden;
 }
 

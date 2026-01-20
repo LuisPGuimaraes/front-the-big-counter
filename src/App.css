@@ -36,17 +36,58 @@
 .controls {
   display: flex;
   gap: 2rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(94, 54, 170, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 16px 30px rgba(26, 18, 48, 0.12);
 }
 
 .controls button {
   min-width: 160px;
 }
 
+.controls-increment {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.increment-control {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.increment-input {
+  width: 160px;
+  text-align: center;
+  border: 3px solid var(--color-purple);
+  border-radius: 999px;
+  padding: 0.59em 1.6em;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-purple);
+  background-color: #ffffff;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.increment-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 54, 170, 0.15);
+}
+
+
 .counters-panel {
   position: fixed;
   left: clamp(1rem, 3vw, 2.5rem);
   top: 10rem;
-  width: min(180px, 72vw);
+  width: min(240px, 72vw);
+  height: 260px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(94, 54, 170, 0.15);
   border-radius: 18px;
@@ -54,6 +95,12 @@
   box-shadow: 0 20px 40px rgba(26, 18, 48, 0.15);
   text-align: left;
   backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.counters-panel-create {
+  top: 29rem;
+  height: auto;
 }
 
 .counters-title {
@@ -65,13 +112,19 @@
 }
 
 .counters-table {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.6rem;
+  height: calc(100% - 2.2rem);
+  overflow-y: auto;
+  padding-right: 0.2rem;
 }
 
 .counters-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 600;
   font-size: 0.95rem;
   color: rgba(51, 33, 90, 0.9);
@@ -85,19 +138,98 @@
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 0.4rem;
+}
+
+.counters-item:hover {
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.counters-item:focus,
+.counters-item:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.counters-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.counters-delete {
+  border: none;
+  background: transparent;
+  color: rgba(94, 54, 170, 0.55);
+  padding: 0.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.counters-delete-icon {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+}
+
+.counters-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.counters-input {
+  border: 1px solid rgba(94, 54, 170, 0.2);
+  border-radius: 12px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(51, 33, 90, 0.9);
+  background: rgba(255, 255, 255, 0.85);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.counters-input::placeholder {
+  color: rgba(51, 33, 90, 0.5);
+  font-weight: 500;
+}
+
+.counters-action {
+  border-radius: 999px;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  background: rgba(94, 54, 170, 0.1);
+  color: rgba(51, 33, 90, 0.9);
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .counters-selected-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
-  background: rgba(94, 54, 170, 0.85);
+  background: rgba(94, 54, 170, 0.9);
   flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(94, 54, 170, 0.15);
 }
 
-.counters-head {
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(51, 33, 90, 0.6);
+.counters-unselected-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(94, 54, 170, 0.1);
+  border: 1px solid rgba(94, 54, 170, 0.35);
+  flex-shrink: 0;
 }

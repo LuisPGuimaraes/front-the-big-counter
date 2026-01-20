@@ -1,102 +1,44 @@
-import { useCallback, useEffect, useState } from 'react'
-import {
-  fetchCount,
-  fetchCounters,
-  incrementCount,
-  resetCount,
-} from '../services/counterApi'
-import type { Counter } from '../types/counter'
+import { useState } from 'react'
+import useCounterValue from './useCounterValue'
+import useCounterManager from './useCounterManager'
 
 type UseCounterOptions = {
   loadOnMount?: boolean
 }
 
 export default function useCounter(options: UseCounterOptions = {}) {
-  const [count, setCount] = useState(0)
-  const [counters, setCounters] = useState<Counter[]>([])
   const [selectedCounterId, setSelectedCounterId] = useState<number | null>(null)
 
-  const getCount = useCallback(async (counterId?: number | null) => {
-    try {
-      const targetId = counterId ?? selectedCounterId
-      if (targetId == null) {
-        return
-      }
+  const {
+    count,
+    getCount,
+    increment,
+    reset,
+    updateCounter,
+    clearCount,
+  } = useCounterValue({ selectedCounterId, setSelectedCounterId })
 
-      if (counterId != null) {
-        setSelectedCounterId(counterId)
-      }
-
-      const realCount = await fetchCount(targetId)
-      setCount(realCount)
-    } catch (err) {
-      console.error('[count] fetch failed', err)
-    }
-  }, [selectedCounterId])
-
-  const handleIncrement = useCallback(async () => {
-    try {
-      if (selectedCounterId == null) {
-        return
-      }
-
-      await incrementCount(selectedCounterId)
-      await getCount()
-    } catch (err) {
-      console.error('[count] increment failed', err)
-    }
-  }, [getCount, selectedCounterId])
-
-  const handleReset = useCallback(async () => {
-    try {
-      if (selectedCounterId == null) {
-        return
-      }
-
-      await resetCount(selectedCounterId)
-      await getCount()
-    } catch (err) {
-      console.error('[count] reset failed', err)
-    }
-  }, [getCount, selectedCounterId])
-
-  const handleListCounter = useCallback(async () => {
-    try {
-      const list = await fetchCounters()
-      setCounters(list)
-    } catch (err) {
-      console.error('[count] list counters failed', err)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (options.loadOnMount) {
-      const loadInitialData = async () => {
-        try {
-          const list = await fetchCounters()
-          setCounters(list)
-          const firstId = list[0]?.id
-          if (firstId != null) {
-            setSelectedCounterId(firstId)
-            const realCount = await fetchCount(firstId)
-            setCount(realCount)
-          }
-        } catch (err) {
-          console.error('[count] initial load failed', err)
-        }
-      }
-
-      void loadInitialData()
-    }
-  }, [options.loadOnMount])
+  const {
+    counters,
+    handleListCounter,
+    createCounter,
+    deleteCounter,
+  } = useCounterManager({
+    loadOnMount: options.loadOnMount,
+    updateCounter,
+    clearCount,
+    setSelectedCounterId,
+  })
 
   return {
     count,
     counters,
     selectedCounterId,
     getCount,
-    increment: handleIncrement,
-    reset: handleReset,
+    increment,
+    reset,
     handleListCounter,
+    createCounter,
+    deleteCounter,
   }
 }
