@@ -15,6 +15,7 @@ function App() {
     increment,
     reset,
     createCounter,
+    deleteCounter,
   } = useCounter({ loadOnMount: true })
 
   return (
@@ -23,6 +24,7 @@ function App() {
         counters={counters}
         selectedCounterId={selectedCounterId}
         onSelectCounter={getCount}
+        onDeleteCounter={deleteCounter}
       />
       <CreateCounterPanel onCreate={createCounter} />
       <h1 className="title">The Big Counter</h1>

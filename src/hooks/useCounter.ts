@@ -3,6 +3,7 @@ import {
   createCounter as createCounterApi,
   fetchCount,
   fetchCounters,
+  deleteCounter as deleteCounterApi,
   incrementCount,
   resetCount,
 } from '../services/counterApi'
@@ -20,13 +21,8 @@ export default function useCounter(options: UseCounterOptions = {}) {
   const getCount = useCallback(async (counterId?: number | null) => {
     try {
       const targetId = counterId ?? selectedCounterId
-      if (targetId == null) {
-        return
-      }
-
-      if (counterId != null) {
-        setSelectedCounterId(counterId)
-      }
+      if (targetId == null) return
+      if (counterId != null) setSelectedCounterId(counterId)
 
       const realCount = await fetchCount(targetId)
       setCount(realCount)
@@ -35,23 +31,33 @@ export default function useCounter(options: UseCounterOptions = {}) {
     }
   }, [selectedCounterId])
 
+  const updateCounter = useCallback(async (counterId: number) => {
+    setSelectedCounterId(counterId)
+    const realCount = await fetchCount(counterId)
+    setCount(realCount)
+  }, [])
+
   const handleIncrement = useCallback(async () => {
     try {
-      await incrementCount()
+      if (selectedCounterId == null) return
+
+      await incrementCount(selectedCounterId)
       await getCount()
     } catch (err) {
       console.error('[count] increment failed', err)
     }
-  }, [getCount])
+  }, [getCount, selectedCounterId])
 
   const handleReset = useCallback(async () => {
     try {
-      await resetCount()
+      if (selectedCounterId == null) return
+
+      await resetCount(selectedCounterId)
       await getCount()
     } catch (err) {
       console.error('[count] reset failed', err)
     }
-  }, [getCount])
+  }, [getCount, selectedCounterId])
 
   const handleListCounter = useCallback(async () => {
     try {
@@ -62,6 +68,25 @@ export default function useCounter(options: UseCounterOptions = {}) {
     }
   }, [])
 
+  const handleDeleteCounter = useCallback(async (counterId: number) => {
+    try {
+      await deleteCounterApi(counterId)
+      const list = await fetchCounters()
+      setCounters(list)
+
+      const nextId = list[0]?.id
+      if (nextId != null) {
+        await updateCounter(nextId)
+      } else {
+        setSelectedCounterId(null)
+        setCount(0)
+      }
+
+    } catch (err) {
+      console.error('[count] delete counter failed', err)
+    }
+  }, [updateCounter])
+
   const handleCreateCounter = useCallback(async (name: string) => {
     const trimmedName = name.trim()
     if (!trimmedName) {
@@ -70,14 +95,31 @@ export default function useCounter(options: UseCounterOptions = {}) {
 
     try {
       const created = await createCounterApi(trimmedName)
-      await handleListCounter()
-      if (created && typeof created.id === 'number') {
-        await getCount(created.id)
+      const list = await fetchCounters()
+      setCounters(list)
+
+      const createdId = resolveCreatedCounterId(created, list, trimmedName)
+
+      if (createdId != null) {
+        await updateCounter(createdId)
       }
     } catch (err) {
       console.error('[count] create counter failed', err)
     }
-  }, [getCount, handleListCounter])
+  }, [updateCounter])
+
+  function resolveCreatedCounterId(
+    created: Counter | null | undefined,
+    list: Counter[],
+    name: string,
+  ) {
+    if (typeof created?.id === 'number') {
+      return created.id
+    }
+
+    const matchId = list.find((counter) => counter.name === name)?.id
+    return matchId ?? list[list.length - 1]?.id
+  }
 
   useEffect(() => {
     if (options.loadOnMount) {
@@ -87,9 +129,7 @@ export default function useCounter(options: UseCounterOptions = {}) {
           setCounters(list)
           const firstId = list[0]?.id
           if (firstId != null) {
-            setSelectedCounterId(firstId)
-            const realCount = await fetchCount(firstId)
-            setCount(realCount)
+            await updateCounter(firstId)
           }
         } catch (err) {
           console.error('[count] initial load failed', err)
@@ -98,7 +138,7 @@ export default function useCounter(options: UseCounterOptions = {}) {
 
       void loadInitialData()
     }
-  }, [options.loadOnMount])
+  }, [options.loadOnMount, updateCounter])
 
   return {
     count,
@@ -109,5 +149,6 @@ export default function useCounter(options: UseCounterOptions = {}) {
     reset: handleReset,
     handleListCounter,
     createCounter: handleCreateCounter,
+    deleteCounter: handleDeleteCounter,
   }
 }

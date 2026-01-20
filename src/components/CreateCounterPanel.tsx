@@ -30,11 +30,11 @@ function CreateCounterPanel({ onCreate }: CreateCounterPanelProps) {
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Counter name"
+          placeholder="Name"
           aria-label="Counter name"
         />
         <button className="counters-action" type="submit">
-          Name
+          Create
         </button>
       </form>
     </section>

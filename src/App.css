@@ -72,7 +72,8 @@
 }
 
 .counters-table {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.6rem;
   height: calc(100% - 2.2rem);
   overflow-y: auto;
@@ -82,6 +83,8 @@
 .counters-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 600;
   font-size: 0.95rem;
   color: rgba(51, 33, 90, 0.9);
@@ -95,6 +98,48 @@
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 0.4rem;
+}
+
+.counters-item:hover {
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.counters-item:focus,
+.counters-item:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.counters-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.counters-delete {
+  border: none;
+  background: transparent;
+  color: rgba(94, 54, 170, 0.55);
+  padding: 0.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.counters-delete-icon {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
 }
 
 .counters-form {
@@ -132,16 +177,19 @@
 }
 
 .counters-selected-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
-  background: rgba(94, 54, 170, 0.85);
+  background: rgba(94, 54, 170, 0.9);
   flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(94, 54, 170, 0.15);
 }
 
-.counters-head {
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(51, 33, 90, 0.6);
+.counters-unselected-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(94, 54, 170, 0.1);
+  border: 1px solid rgba(94, 54, 170, 0.35);
+  flex-shrink: 0;
 }

@@ -46,11 +46,17 @@ async function requestJson<T>(path: string, options?: RequestInit) {
 }
 
 export function fetchCount(counterId: number) {
-  return requestCount(`/count/${counterId}`)
+  const query = new URLSearchParams({ id: String(counterId) })
+  return requestCount(`/count?${query.toString()}`)
 }
 
-export function incrementCount() {
-  return requestCount('/count/increment', { method: 'POST' })
+export function incrementCount(counterId: number, incrementValue = 1) {
+  const body = JSON.stringify({ 'counter-id': counterId, 'increment-value': incrementValue })
+  return requestCount('/count/increment', {
+    method: 'POST',
+    body,
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
 
 export function resetCount(counterId: number) {
