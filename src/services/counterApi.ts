@@ -86,3 +86,33 @@ export function deleteCounter(id: number) {
   const query = new URLSearchParams({ id: String(id) })
   return requestCount(`/counter?${query.toString()}`, { method: 'DELETE' })
 }
+
+export async function fetchCounters() {
+  const url = buildApiUrl('/counter')
+
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error('Failed to request /counts')
+  }
+
+  const data = await response.json()
+  if (Array.isArray(data)) {
+    return data as Counter[]
+  }
+
+  if (data && typeof data === 'object' && Array.isArray((data as { counters?: unknown }).counters)) {
+    return (data as { counters: Counter[] }).counters
+  }
+
+  return []
+}
+
+export function createCounter(name: string) {
+  const body = JSON.stringify({ name })
+  return requestCount('/count/create', { method: 'POST', body, headers: { 'Content-Type': 'application/json' } })
+}
+
+export function deleteCounter(id: number) {
+  return requestCount(`/count/${id}`, { method: 'DELETE' })
+}
