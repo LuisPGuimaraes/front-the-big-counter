@@ -2,7 +2,7 @@
 
 Web interface to manage counters: list, create, select, increment with a custom value, and reset.
 
-![alt text](image.png)
+![alt text](image-1.png)
 
 ## Stack
 
