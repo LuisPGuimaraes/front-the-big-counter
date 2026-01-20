@@ -46,7 +46,8 @@
   position: fixed;
   left: clamp(1rem, 3vw, 2.5rem);
   top: 10rem;
-  width: min(180px, 72vw);
+  width: min(240px, 72vw);
+  height: 260px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(94, 54, 170, 0.15);
   border-radius: 18px;
@@ -54,6 +55,12 @@
   box-shadow: 0 20px 40px rgba(26, 18, 48, 0.15);
   text-align: left;
   backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.counters-panel-create {
+  top: 29rem;
+  height: auto;
 }
 
 .counters-title {
@@ -67,6 +74,9 @@
 .counters-table {
   display: grid;
   gap: 0.6rem;
+  height: calc(100% - 2.2rem);
+  overflow-y: auto;
+  padding-right: 0.2rem;
 }
 
 .counters-row {
@@ -85,6 +95,40 @@
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.counters-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.counters-input {
+  border: 1px solid rgba(94, 54, 170, 0.2);
+  border-radius: 12px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(51, 33, 90, 0.9);
+  background: rgba(255, 255, 255, 0.85);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.counters-input::placeholder {
+  color: rgba(51, 33, 90, 0.5);
+  font-weight: 500;
+}
+
+.counters-action {
+  border-radius: 999px;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  background: rgba(94, 54, 170, 0.1);
+  color: rgba(51, 33, 90, 0.9);
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .counters-selected-dot {

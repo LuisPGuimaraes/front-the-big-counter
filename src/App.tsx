@@ -1,5 +1,6 @@
 import './App.css'
 import CountDisplay from './components/CountDisplay'
+import CreateCounterPanel from './components/CreateCounterPanel'
 import CountersTable from './components/CountersList'
 import IncrementButton from './components/IncrementButton'
 import ResetButton from './components/ResetButton'
@@ -13,7 +14,8 @@ function App() {
     getCount,
     increment,
     reset,
-  } = useCounter()
+    createCounter,
+  } = useCounter({ loadOnMount: true })
 
   return (
     <div className="app">
@@ -22,6 +24,7 @@ function App() {
         selectedCounterId={selectedCounterId}
         onSelectCounter={getCount}
       />
+      <CreateCounterPanel onCreate={createCounter} />
       <h1 className="title">The Big Counter</h1>
       <div className="counter-area">
         <CountDisplay count={count} />

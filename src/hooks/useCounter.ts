@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
+  createCounter as createCounterApi,
   fetchCount,
   fetchCounters,
   incrementCount,
@@ -61,6 +62,23 @@ export default function useCounter(options: UseCounterOptions = {}) {
     }
   }, [])
 
+  const handleCreateCounter = useCallback(async (name: string) => {
+    const trimmedName = name.trim()
+    if (!trimmedName) {
+      return
+    }
+
+    try {
+      const created = await createCounterApi(trimmedName)
+      await handleListCounter()
+      if (created && typeof created.id === 'number') {
+        await getCount(created.id)
+      }
+    } catch (err) {
+      console.error('[count] create counter failed', err)
+    }
+  }, [getCount, handleListCounter])
+
   useEffect(() => {
     if (options.loadOnMount) {
       const loadInitialData = async () => {
@@ -90,5 +108,6 @@ export default function useCounter(options: UseCounterOptions = {}) {
     increment: handleIncrement,
     reset: handleReset,
     handleListCounter,
+    createCounter: handleCreateCounter,
   }
 }

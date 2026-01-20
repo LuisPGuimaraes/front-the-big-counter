@@ -10,7 +10,7 @@
   font-weight: 400;
 
   color: var(--color-purple);
-  background-color: #ffffff;
+  background-color: #f6f6f6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,7 +22,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #ffffff 0%, var(--color-lavender) 100%);
+  background: linear-gradient(180deg, #f6f6f6 0%, var(--color-lavender) 100%);
   overflow: hidden;
 }
 
