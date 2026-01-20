@@ -32,8 +32,10 @@ function App() {
         <CountDisplay count={count} />
       </div>
       <div className="controls">
-        <ResetButton onReset={reset} />
-        <IncrementButton onIncrement={increment} />
+        <div className="controls-increment">
+          <IncrementButton onIncrement={increment} />
+          <ResetButton onReset={reset} />
+        </div>
       </div>
     </div>
   )

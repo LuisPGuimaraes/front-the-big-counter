@@ -36,11 +36,51 @@
 .controls {
   display: flex;
   gap: 2rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(94, 54, 170, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 16px 30px rgba(26, 18, 48, 0.12);
 }
 
 .controls button {
   min-width: 160px;
 }
+
+.controls-increment {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.increment-control {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.increment-input {
+  width: 160px;
+  text-align: center;
+  border: 3px solid var(--color-purple);
+  border-radius: 999px;
+  padding: 0.59em 1.6em;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-purple);
+  background-color: #ffffff;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.increment-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 54, 170, 0.15);
+}
+
 
 .counters-panel {
   position: fixed;
