@@ -13,7 +13,7 @@ function App() {
     getCount,
     increment,
     reset,
-  } = useCounter()
+  } = useCounter({ loadOnMount: true })
 
   return (
     <div className="app">

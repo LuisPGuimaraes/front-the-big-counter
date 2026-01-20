@@ -36,21 +36,29 @@ export default function useCounter(options: UseCounterOptions = {}) {
 
   const handleIncrement = useCallback(async () => {
     try {
-      await incrementCount()
+      if (selectedCounterId == null) {
+        return
+      }
+
+      await incrementCount(selectedCounterId)
       await getCount()
     } catch (err) {
       console.error('[count] increment failed', err)
     }
-  }, [getCount])
+  }, [getCount, selectedCounterId])
 
   const handleReset = useCallback(async () => {
     try {
-      await resetCount()
+      if (selectedCounterId == null) {
+        return
+      }
+
+      await resetCount(selectedCounterId)
       await getCount()
     } catch (err) {
       console.error('[count] reset failed', err)
     }
-  }, [getCount])
+  }, [getCount, selectedCounterId])
 
   const handleListCounter = useCallback(async () => {
     try {
