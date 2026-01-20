@@ -21,7 +21,7 @@ export default function useCounterValue({
       const realCount = await fetchCount(targetId)
       setCount(realCount)
     } catch (err) {
-      console.error('[count] fetch failed', err)
+      reportError('Falha ao buscar o contador.', err)
     }
   }, [selectedCounterId, setSelectedCounterId])
 
@@ -43,7 +43,7 @@ export default function useCounterValue({
       await incrementCount(selectedCounterId, incrementValue)
       await getCount()
     } catch (err) {
-      console.error('[count] increment failed', err)
+      reportError('Falha ao incrementar o contador.', err)
     }
   }, [getCount, selectedCounterId])
 
@@ -54,7 +54,7 @@ export default function useCounterValue({
       await resetCount(selectedCounterId)
       await getCount()
     } catch (err) {
-      console.error('[count] reset failed', err)
+      reportError('Falha ao resetar o contador.', err)
     }
   }, [getCount, selectedCounterId])
 
@@ -66,4 +66,9 @@ export default function useCounterValue({
     updateCounter,
     clearCount,
   }
+}
+
+function reportError(message: string, err: unknown) {
+  console.error(message, err)
+  window.alert(message)
 }

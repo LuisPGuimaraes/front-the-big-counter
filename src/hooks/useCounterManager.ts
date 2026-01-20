@@ -26,7 +26,7 @@ export default function useCounterManager({
       const list = await fetchCounters()
       setCounters(list)
     } catch (err) {
-      console.error('[count] list counters failed', err)
+      reportError('Falha ao listar contadores.', err)
     }
   }, [])
 
@@ -44,7 +44,7 @@ export default function useCounterManager({
         clearCount()
       }
     } catch (err) {
-      console.error('[count] delete counter failed', err)
+      reportError('Falha ao remover o contador.', err)
     }
   }, [clearCount, setSelectedCounterId, updateCounter])
 
@@ -65,7 +65,7 @@ export default function useCounterManager({
         await updateCounter(createdId)
       }
     } catch (err) {
-      console.error('[count] create counter failed', err)
+      reportError('Falha ao criar o contador.', err)
     }
   }, [updateCounter])
 
@@ -80,7 +80,7 @@ export default function useCounterManager({
             await updateCounter(firstId)
           }
         } catch (err) {
-          console.error('[count] initial load failed', err)
+          reportError('Falha ao carregar contadores.', err)
         }
       }
 
@@ -94,6 +94,11 @@ export default function useCounterManager({
     createCounter: handleCreateCounter,
     deleteCounter: handleDeleteCounter,
   }
+}
+
+function reportError(message: string, err: unknown) {
+  console.error(message, err)
+  window.alert(message)
 }
 
 function resolveCreatedCounterId(
